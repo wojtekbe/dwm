@@ -158,6 +158,7 @@ static void checkotherwm(void);
 static void cleanup(void);
 static void cleanupmon(Monitor *mon);
 static void clientmessage(XEvent *e);
+static void closeonclick(const Arg *arg);
 static void configure(Client *c);
 static void configurenotify(XEvent *e);
 static void configurerequest(XEvent *e);
@@ -173,6 +174,7 @@ static void expose(XEvent *e);
 static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
+static void focusonclick(const Arg *arg);
 static void focusstack(const Arg *arg);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
@@ -560,6 +562,19 @@ clientmessage(XEvent *e)
 }
 
 void
+closeonclick(const Arg *arg)
+{
+	Client *c = (Client*)arg->v;
+	if (c == selmon->sel)
+		killclient(arg);
+	else {
+		focus(c);
+		restack(selmon);
+        killclient(arg);
+	}
+}
+
+void
 configure(Client *c)
 {
 	XConfigureEvent ce;
@@ -888,6 +903,14 @@ focusmon(const Arg *arg)
 	unfocus(selmon->sel, 0);
 	selmon = m;
 	focus(NULL);
+}
+
+void
+focusonclick(const Arg *arg)
+{
+	Client *c = (Client*)arg->v;
+    focus(c);
+    restack(selmon);
 }
 
 void
