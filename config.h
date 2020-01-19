@@ -12,7 +12,7 @@ static const char col_gray1[]       = "#222222";
 static const char col_gray2[]       = "#444444";
 static const char col_gray3[]       = "#bbbbbb";
 static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_cyan[]        = "#2B5278";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
@@ -91,9 +91,6 @@ static const char *backlightdown[] = { "xbacklight", "-dec", "10%", NULL };
 /* shutdown (for power button) */
 static const char *exitdmenucmd[] = { "dmenu-exit", "-fn", dmenufont, "-nb", "#ff0000", "-nf", "#000000", "-sb", "#000000", "-sf", col_gray4, NULL };
 
-/* locking the screen */
-static const char *slock[] = {"slock"};
-
 static Key keys[] = {
 	/* modifier             key                      function        argument */
 	{ MODKEY,               XK_b,                    togglebar,      {0} },
@@ -129,9 +126,6 @@ static Key keys[] = {
 	{ MODKEY,               XK_r,                    spawn,          {.v = dmenucmd } },
 	{ MODKEY,               XK_space,                spawn,          {.v = dmenucmd } },
 
-	{ 0,                    XF86XK_MonBrightnessUp,  spawn,          {.v = backlightup } },
-	{ 0,                    XF86XK_MonBrightnessDown,spawn,          {.v = backlightdown } },
-
 	{ 0,                    XF86XK_AudioRaiseVolume, spawn,          {.v = volupcmd } },
 	{ 0,                    XF86XK_AudioLowerVolume, spawn,          {.v = voldowncmd } },
 	{ MODKEY,               XK_F12,                  spawn,          {.v = volupcmd } },
@@ -143,12 +137,12 @@ static Key keys[] = {
 	{ Mod1Mask|ControlMask, XK_Delete,               spawn,          {.v = exitdmenucmd } },
 
 	{ Mod4Mask,             XK_F2,                   spawn,          {.v = dmenucmd } },
-	{ Mod4Mask,             XK_Right,                tagmon,         {.i = -1 } },
-	{ Mod4Mask,             XK_Left,                 tagmon,         {.i = +1 } },
+	{ Mod4Mask,             XK_comma,                tagmon,         {.i = -1 } },
+	{ Mod4Mask,             XK_period,               tagmon,         {.i = +1 } },
 	{ Mod4Mask,             XK_space,                togglefloating, {0} },
 	{ Mod4Mask,             XK_Return,               spawn,          {.v = termcmd } },
 
-	{ Mod4Mask,             XK_l,                    spawn,          {.v = slock } },
+	{ Mod4Mask,             XK_l,                    spawn,          SHCMD("slock") },
 
 	{ 0,                    XF86XK_Display,          spawn,          SHCMD("x1_eDP.sh") },
 
@@ -182,6 +176,5 @@ static Button buttons[] = {
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkStatusText,        0,              Button4,        spawn,          {.v = volupcmd } },
 	{ ClkStatusText,        0,              Button5,        spawn,          {.v = voldowncmd } },
-	{ ClkStatusText,        0,              Button2,        spawn,          SHCMD("urxvt") },
 	{ ClkStatusText,        0,              Button1,        spawn,          SHCMD("scratchpad") },
 };
